@@ -96,8 +96,25 @@ class FirstToGain100:
 
         return 0 if points[0] > points[1] else 1
 
+
+class FirstDoble(FirstToGain100):
+    """
+        First to team that gain 100 points counting the first round doble. 
+        Last winner start next match
+    """
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.first_round = True
+
+    def update_score(self, palyers):
+        score = super().update_score(players) * (self.first_round + 1)
+        self.first_round = False
+        return score
+
+
 RULES = [
     OneGame,
     TwoOfThree,
     FirstToGain100,
+    FirstDoble,
 ]
