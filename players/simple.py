@@ -86,3 +86,56 @@ class Frequent(BasePlayer):
 
         # Return one piece with largest number of neighbors randomly
         return random.choice(pieces)
+
+
+class Repeater(BasePlayer):
+    """ Find the piece with the number more used by himself. It tries to avoid passing.
+    """
+    def __init__(self, name):
+        super().__init__(f"Repeater::{name}")
+
+
+    def times_played(self, numbers):
+        ''' Given a list of numbers return the amount of repetions per each one
+        '''
+        times = []
+        all_moves = [d for e, *d in self.history if e.name == 'MOVE']
+        if not all_moves:
+            return [0] * len(numbers)
+        first, *moves = all_moves
+        for num in numbers:
+            times.append(0)
+            heads = list(first[1])
+            for data in moves:
+                player, piece, head = data
+                heads[head] = piece[piece[0] == heads[head]]
+                times[-1] += (num in heads) * (player == self.position)
+            times[-1] += (num in first[1]) * (first[0] == self.position)
+        return times
+
+
+    def choice(self):
+        # List all valid moves in the form (piece, head).
+        # This is put piece on head.
+        valids = []
+
+        for piece in self.pieces:
+            for head in range(2):
+                if self.valid(piece, head):
+                    valids.append((piece, head))
+
+        # Select the movement that generate the maximun repetion
+        best, selected = [-1, -1], None
+        for piece, head in valids:
+            heads = self.heads[:]
+            heads[head] = piece[piece[0] == heads[head]]
+            times = self.times_played(heads)
+            times.sort(reverse=True)
+            if times > best:
+                best, selected = times, (piece, head)
+
+        return selected
+
+
+
+        
