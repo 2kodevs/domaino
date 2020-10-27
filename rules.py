@@ -1,5 +1,5 @@
 import random
-from domino import DominoManager
+from domino import DominoManager, Event
 
 class BaseRule:
     """
@@ -118,9 +118,26 @@ class FirstDoble(FirstToGain100):
         return score
 
 
+class CapicuaDoble(FirstToGain100):
+    """
+        First to team that gain 100 points counting the capicua doble. 
+        Last winner start next match
+    """
+    def __init__(self, *args):
+        super().__init__(*args)
+
+    def update_score(self, **kwargs):
+        score = super().update_score(**kwargs)
+        
+        domino = kwargs['domino']
+        capicua = domino.logs[-2][0] == Event.WIN and domino.head[0] == domino.head[1]
+        return score * (capicua + 1)
+    
+
 RULES = [
     OneGame,
     TwoOfThree,
     FirstToGain100,
     FirstDoble,
+    CapicuaDoble,
 ]
