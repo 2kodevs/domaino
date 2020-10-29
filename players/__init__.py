@@ -1,4 +1,4 @@
-from .simple import BigDrop, Frequent, Random, Repeater
+from .simple import BigDrop, Frequent, Random, Repeater, TableCounter
 from .simpleh import SimpleHybrid
 from .mc import MonteCarlo
 
@@ -10,4 +10,5 @@ PLAYERS = [
     SimpleHybrid,
     MonteCarlo,
     Repeater,
+    TableCounter,
 ]
