@@ -95,22 +95,25 @@ class Repeater(BasePlayer):
         super().__init__(f"Repeater::{name}")
 
 
-    def times_played(self, numbers):
+    def times_played(self):
         ''' Given a list of numbers return the amount of repetions per each one
         '''
-        times = []
+
+        def update(d, player, heads):
+            if player == self.position:
+                for num in heads:
+                    d[num] = d.get(num, 0) + 1
+        
+        times = {}
         all_moves = [d for e, *d in self.history if e.name == 'MOVE']
-        if not all_moves:
-            return [0] * len(numbers)
-        first, *moves = all_moves
-        for num in numbers:
-            times.append(0)
+        if all_moves:
+            first, *moves = all_moves
             heads = list(first[1])
+            update(times, first[0], heads)
             for data in moves:
                 player, piece, head = data
                 heads[head] = piece[piece[0] == heads[head]]
-                times[-1] += (num in heads) * (player == self.position)
-            times[-1] += (num in first[1]) * (first[0] == self.position)
+                update(times, player, heads)    
         return times
 
 
@@ -126,13 +129,14 @@ class Repeater(BasePlayer):
 
         # Select the movement that generate the maximun repetion
         best, selected = [-1, -1], None
+        times = self.times_played()
         for piece, head in valids:
             heads = self.heads[:]
             heads[head] = piece[piece[0] == heads[head]]
-            times = self.times_played(heads)
-            times.sort(reverse=True)
-            if times > best:
-                best, selected = times, (piece, head)
+            heads_value = [times.get(num, 0) for num in heads]
+            heads_value.sort(reverse=True)
+            if heads_value > best:
+                best, selected = heads_value, (piece, head)
 
         return selected
 
