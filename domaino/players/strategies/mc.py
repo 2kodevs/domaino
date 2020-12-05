@@ -1,14 +1,14 @@
 """
     Montecarlo agent
 """
-from player import BasePlayer
-from domino import Event
+from ..player import BasePlayer
+from ...domino import Event
 from copy import deepcopy
 from random import shuffle, choice
 from math import log
 
 import numpy as np
-from common.logger import add_logger, DEBUG, INFO
+from ...common.logger import add_logger, DEBUG, INFO
 
 logger = add_logger('mcts', INFO)
 logger.disabled = False

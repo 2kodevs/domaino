@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import argparse
-from players import PLAYERS
-from rules import RULES
+from domaino import PLAYERS, RULES
 
 
 def find(elements, value):

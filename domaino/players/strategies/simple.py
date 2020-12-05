@@ -1,4 +1,4 @@
-from player import BasePlayer
+from ..player import BasePlayer
 import random
 
 class BigDrop(BasePlayer):
@@ -130,7 +130,7 @@ class TableCounter(BasePlayer):
 
     
     def filter(self, valids=None):
-        valids = super().filter(self, valids)
+        valids = super().filter(valids)
 
         best, data = -1, []
         cant = self.count_table()

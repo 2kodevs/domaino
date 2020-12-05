@@ -4,7 +4,7 @@ from pprint import pprint
 from copy import deepcopy
 from enum import Enum
 
-from common.logger import add_logger, INFO
+from ..common.logger import add_logger, INFO
 
 logger = add_logger("domino", INFO)
 
@@ -93,7 +93,7 @@ class Domino:
 
     def log(self, *data):
         event, *params = data
-        # logger.info(f"{event.name}: {params}")
+        logger.info(f"{event.name}: {params}")
         self.logs.append(data)
 
     def get_pieces(self):
