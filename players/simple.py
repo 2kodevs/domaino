@@ -200,6 +200,6 @@ class Supportive(BasePlayer):
             else:
                 medium.append((piece, head))
 
-        if top != []:
-            return top
-        return medium if medium != [] else low
+        for data in [top, medium, low]:
+            if data: 
+                return data
