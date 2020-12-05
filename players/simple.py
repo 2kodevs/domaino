@@ -173,8 +173,7 @@ class Passer(BasePlayer):
             elif e.name =='PASS' and d[0] == self.next:
                 h0, h1 = heads
                 next_player_passed[h0] = True
-                if h0 != h1:
-                    next_player_passed[h1] = True
+                next_player_passed[h1] = True
 
         best, selected = -2, []
         for piece, head in valids:
