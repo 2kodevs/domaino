@@ -169,7 +169,7 @@ class Passer(BasePlayer):
                     heads = piece
                     first_move = False
                 else:
-                    heads[head] = piece[0] if piece[1] == heads[head] else piece[1]
+                    heads[head] = piece[piece[0] == heads[head]]
             elif e.name =='PASS' and d[0] == self.next:
                 h0, h1 = heads
                 next_player_passed[h0] = True
@@ -177,10 +177,10 @@ class Passer(BasePlayer):
 
         best, selected = -2, []
         for piece, head in valids:
+            next_head = piece[piece[0] == heads[head]]
             value = 0
             value -= next_player_passed.get(self.heads[head])
-            value += 2 * (next_player_passed.get(piece[0]) and piece[0] != self.heads[head]) or \
-                    (next_player_passed.get(piece[1]) and piece[1] != self.heads[head])
+            value += 2 * next_player_passed.get([next_head], 0)
             if value > best:
                 best = value
                 selected.clear()
