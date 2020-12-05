@@ -2,7 +2,7 @@ from ..player import BasePlayer
 
 class Agachao(BasePlayer):
     ''' 
-    This player doesn't wan't to pass, 
+    This player doesn't want to pass, 
     so if there is a number that appears in only one piece, 
     this piece will not be used until there's no other choice.
     '''
