@@ -12,17 +12,15 @@ class BigDrop(BasePlayer):
         max_weight = 0
         fat = []
 
-        for piece in self.pieces:
-            for head in range(2):
-                if self.valid(piece, head):
-                    weight = piece[0] + piece[1]
+        for piece, head in self.valid_moves():
+            weight = piece[0] + piece[1]
 
-                    if weight > max_weight:
-                        fat.clear()
-                        max_weight = weight
+            if weight > max_weight:
+                fat.clear()
+                max_weight = weight
 
-                    if weight == max_weight:
-                        fat.append((piece, head))
+            if weight == max_weight:
+                fat.append((piece, head))
 
         assert len(fat) > 0
 
@@ -39,14 +37,8 @@ class Random(BasePlayer):
 
     def choice(self):
         heads = self.heads
-        valids = []
 
-        for piece in self.pieces:
-            for head in range(2):
-                if self.valid(piece, head):
-                    valids.append((piece, head))
-
-        return random.choice(valids)
+        return random.choice(self.valid_moves())
 
 
 class Frequent(BasePlayer):
@@ -56,21 +48,12 @@ class Frequent(BasePlayer):
         super().__init__(f"Frequent::{name}")
 
     def choice(self):
-        # List all valid moves in the form (piece, head).
-        # This is put piece on head.
-        valids = []
-
-        for piece in self.pieces:
-            for head in range(2):
-                if self.valid(piece, head):
-                    valids.append((piece, head))
-
         # One piece A is neighbor of B if have at least one common number
         # Find pieces with largest number of neighbors
         pieces = []
         best_freq = -1
 
-        for (cur_piece, head) in valids:
+        for (cur_piece, head) in self.valid_moves():
             freq = 0
 
             for piece in self.pieces:
@@ -86,3 +69,51 @@ class Frequent(BasePlayer):
 
         # Return one piece with largest number of neighbors randomly
         return random.choice(pieces)
+
+
+class Repeater(BasePlayer):
+    """ Find the piece with the number more used by himself. It tries to avoid passing.
+    """
+    def __init__(self, name):
+        super().__init__(f"Repeater::{name}")
+
+
+    def times_played(self):
+        ''' Given a list of numbers return the amount of repetions per each one
+        '''
+
+        def update(d, player, heads):
+            if player == self.position:
+                for num in heads:
+                    d[num] = d.get(num, 0) + 1
+        
+        times = {}
+        all_moves = [d for e, *d in self.history if e.name == 'MOVE']
+        if all_moves:
+            first, *moves = all_moves
+            heads = list(first[1])
+            update(times, first[0], heads)
+            for data in moves:
+                player, piece, head = data
+                heads[head] = piece[piece[0] == heads[head]]
+                update(times, player, heads)    
+        return times
+
+
+    def choice(self):
+        # Select the movement that generate the maximun repetion
+        best, selected = [-1, -1], None
+        times = self.times_played()
+        for piece, head in self.valid_moves():
+            heads = self.heads[:]
+            heads[head] = piece[piece[0] == heads[head]]
+            heads_value = [times.get(num, 0) for num in heads]
+            heads_value.sort(reverse=True)
+            if heads_value > best:
+                best, selected = heads_value, (piece, head)
+
+        return selected
+
+
+
+        

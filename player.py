@@ -39,6 +39,17 @@ class BasePlayer:
         """
         return self.heads[head] == -1 or self.heads[head] in piece
 
+    def valid_moves(self):
+        # List all valid moves in the form (piece, head).
+        # This is put piece on head.
+        valids = []
+
+        for piece in self.pieces:
+            for head in range(2):
+                if self.valid(piece, head):
+                    valids.append((piece, head))
+        return valids
+        
     def reset(self, position, pieces):
         self.position = position
         self.pieces = pieces
