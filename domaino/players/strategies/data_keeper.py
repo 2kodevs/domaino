@@ -15,22 +15,16 @@ class DataKeeper(BasePlayer):
             if p1 != p2:
                 datas[p2] = datas.get(p2, 0) + 1
             datas[p1] = datas.get(p1, 0) + 1
-        
-        pieces = {x for p, h in valids for x in p}
-        temp = [(c, v) for v, c in datas.items() if v in pieces]
-        temp.sort(reverse=True)
-        
-        best, selected = temp[0][0], set()
+                
+        best, selected = float('inf'), []
         for piece, head in valids:
-            value = [datas.get(piece[0], 0), datas.get(piece[1], 0)]
+            value = max(datas[piece[0]], datas[piece[1]])
 
-            for i in range(2):
-                if datas.get(piece[i], 0) < best:
-                    best = value[i]
-                    selected.clear()
-                    selected.add((piece, head))
-                else:
-                    selected.add((piece, head))
+            if value < best:
+                best = value
+                selected.clear()
+            if value == best:
+                selected.append((piece, head))
 
-        return list(selected)
+        return selected
         
