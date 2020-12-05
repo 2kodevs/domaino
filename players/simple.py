@@ -148,6 +148,64 @@ class TableCounter(BigDrop):
                
         return super().choice(data)
 
+
+class Supportive(BasePlayer):
+    '''
+    When the other player of the team is the hand, plays for him.
+    '''
+    def __init__(self, name):
+        super().__init__(f"Supportive::{name}")
+
+    def filter(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+        
+        heads = []
+        passed = {}
+        player_pieces = {}
+        my_pieces = 0
+        first_move = True
+        for e, *d in self.history:
+            if e.name == 'MOVE':
+                player, piece, head = d
+                if first_move:
+                    heads = piece
+                    first_move = False
+                else:
+                    heads[head] = piece[piece[0] == heads[head]]
+                    if player == self.me:
+                        my_pieces += 1
+                    elif not player_pieces.get(heads[head]):
+                        player_pieces[heads[head]] = player
+            elif e.name =='PASS' and d[0] == self.partner:
+                h0, h1 = heads
+                passed[h0] = True
+                passed[h1] = True
+
+        partner_pieces = list(filter(lambda _, p: p == self.partner, player_pieces.items()))
+
+        #True if current_player is the hand
+        if sum(partner_pieces.values()) <= my_pieces:
+            return valids
+
+        top = []
+        medium = []
+        low = []
+        for piece, head in valids:
+            next_head = piece[piece[0] == heads[head]]
+            if passed.get(self.heads[head]):
+                top.append((piece, head))
+            elif partner_pieces.get(self.heads[head]):
+                low.append((piece, head))
+            elif partner_pieces[next_head]:
+                top.append((piece, head))
+            else:
+                medium.append((piece, head))
+
+        for data in [top, medium, low]:
+            if data: 
+                return data
+
 class Passer(BasePlayer):
     '''
     When the other player of the team is the hand, plays for him.
