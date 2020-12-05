@@ -208,7 +208,7 @@ class Supportive(BasePlayer):
 
 class Passer(BasePlayer):
     '''
-    When the other player of the team is the hand, plays for him.
+   Always tries the next player passes
     '''
     def __init__(self, name):
         super().__init__(f"Passer::{name}")
