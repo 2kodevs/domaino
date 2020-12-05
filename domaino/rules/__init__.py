@@ -13,4 +13,4 @@ def get_rule(value):
     for obj in RULES:
         if obj.__name__.lower() == value:
             return obj
-    raise ValueError(f"{value} not found in {[e.__name__ for e in elements]}")
+    raise ValueError(f"{value} not found in {[r.__name__ for r in RULES]}")
