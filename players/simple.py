@@ -180,8 +180,7 @@ class Supportive(BasePlayer):
             elif e.name =='PASS' and d[0] == self.partner:
                 h0, h1 = heads
                 passed[h0] = True
-                if h0 != h1:
-                    passed[h1] = True
+                passed[h1] = True
 
         #True if current_player is the hand
         if sum(partner_pieces.values()) < my_pieces:
