@@ -7,12 +7,14 @@ class BigDrop(BasePlayer):
     def __init__(self, name):
         super().__init__(f"BigDrop::{name}")
 
-    def choice(self):
-        heads = self.heads
+    def choice(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+
         max_weight = 0
         fat = []
 
-        for piece, head in self.valid_moves():
+        for piece, head in valids:
             weight = piece[0] + piece[1]
 
             if weight > max_weight:
@@ -36,8 +38,6 @@ class Random(BasePlayer):
         super().__init__(f"Random::{name}")
 
     def choice(self):
-        heads = self.heads
-
         return random.choice(self.valid_moves())
 
 
@@ -115,5 +115,35 @@ class Repeater(BasePlayer):
         return selected
 
 
+class TableCounter(BigDrop):
+    ''' 
+    Select the pice with higher score from the pices with most frequent played values
+    '''
+    def __init__(self, *args):
+        super().__init__(*args)
 
-        
+
+    def count_table(self):
+        cant = {}
+        pieces = [d[1] for e, *d in self.history if e.name == 'MOVE']
+        for p in pieces:
+            cant[p[0]] = cant.get(p[0], 0) + 1
+            if p[0] != p[1]:
+                cant[p[1]] = cant.get(p[1], 0) + 1
+        return cant
+
+    
+    def choice(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+
+        best, data = -1, []
+        cant = self.count_table()
+        for piece, head in valids:
+            value = cant.get(piece[piece[0] == self.heads[head]], 0)
+            if value > best:
+                best, data = value, []
+            if value == best:
+                data.append((piece, head))
+               
+        return super().choice(data)
