@@ -1,2 +1,2 @@
-from .strategies import PLAYERS
+from .strategies import get_player
 from .player import BasePlayer

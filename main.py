@@ -1,14 +1,6 @@
 #!/usr/bin/python3
 import argparse
-from domaino import PLAYERS, RULES
-
-
-def find(elements, value):
-    value = value.lower()
-    for obj in elements:
-        if obj.__name__.lower() == value:
-            return obj
-    raise ValueError(f"{value} not found in {[e.__name__ for e in elements]}")
+from domaino import get_player, get_rule
 
 
 def info(args):
@@ -22,9 +14,9 @@ def info(args):
 
 
 def play(args):
-    player0 = find(PLAYERS, args.player0)
-    player1 = find(PLAYERS, args.player1)
-    rule = find(RULES, args.rule)
+    player0 = get_player(args.player0)
+    player1 = get_player(args.player1)
+    rule = get_rule(args.rule)
 
     game = rule()
     game.start(player0, player1, *args.pieces)

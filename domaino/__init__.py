@@ -1,2 +1,2 @@
-from .rules import RULES
-from .players import PLAYERS
+from .rules import get_rule
+from .players import get_player
