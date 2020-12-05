@@ -28,7 +28,7 @@ def play(args):
     rule = find(RULES, args.rule)
 
     game = rule()
-    game.start(player0, player1)
+    game.start(player0, player1, *args.pieces)
 
 
 def main():
@@ -43,6 +43,7 @@ def main():
     play_parser.add_argument('-p0', '--player0', dest='player0', default='random')
     play_parser.add_argument('-p1', '--player1', dest='player1', default='random')
     play_parser.add_argument('-r', '--rule', dest='rule', default='onegame')
+    play_parser.add_argument('-n', '--nine', dest='pieces', action='store_const', const=[9,10], default=[])
     # play_parser.add_argument('-c', '--count', type=int, dest='count', default=1, help="Number of games to play")
     play_parser.set_defaults(command=play)
 

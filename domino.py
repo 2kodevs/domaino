@@ -203,12 +203,12 @@ class DominoManager:
                 player.log(data)
             self.logs_transmitted += 1
 
-    def run(self, players):
+    def run(self, players, *pieces_config):
         self.logs_transmitted = 0
         self.players = players
         self.domino = Domino()
 
-        self.domino.reset()
+        self.domino.reset(*pieces_config)
 
         for i, player in enumerate(players):
             player.reset(i, self.domino.players[i].pieces[:])
