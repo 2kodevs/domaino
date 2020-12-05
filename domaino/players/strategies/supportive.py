@@ -41,7 +41,7 @@ class Supportive(BasePlayer):
         medium = []
         low = []
         for piece, head in valids:
-            next_head = piece[piece[0] == heads[head]]
+            next_head = piece[piece[0] == self.heads[head]]
             if passed.get(self.heads[head]):
                 top.append((piece, head))
             elif player_pieces.get(self.heads[head]) == self.partner:
