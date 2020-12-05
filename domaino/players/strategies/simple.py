@@ -142,3 +142,101 @@ class TableCounter(BasePlayer):
                 data.append((piece, head))
                
         return data
+
+
+class Supportive(BasePlayer):
+    '''
+    When the other player of the team is the hand, plays for him.
+    '''
+    def __init__(self, name):
+        super().__init__(f"Supportive::{name}")
+
+    def filter(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+        
+        heads = []
+        passed = {}
+        first_move = True
+        player_pieces = {}
+        my_pieces, partner_pieces = 0, 0
+        for e, *d in self.history:
+            if e.name == 'MOVE':
+                player, piece, head = d
+                if first_move:
+                    heads = list(piece)
+                    first_move = False
+                else:
+                    heads[head] = piece[piece[0] == heads[head]]
+                    my_pieces += (player == self.me)
+                    partner_pieces += (player == self.partner)
+                    if not player_pieces.get(heads[head]):
+                        player_pieces[heads[head]] = player
+            elif e.name =='PASS' and d[0] == self.partner:
+                h0, h1 = heads
+                passed[h0] = True
+                passed[h1] = True
+
+        #True if current_player is the hand
+        if partner_pieces <= my_pieces:
+            return valids
+
+        top = []
+        medium = []
+        low = []
+        for piece, head in valids:
+            next_head = piece[piece[0] == heads[head]]
+            if passed.get(self.heads[head]):
+                top.append((piece, head))
+            elif player_pieces.get(self.heads[head]) == self.partner:
+                low.append((piece, head))
+            elif player_pieces.get(next_head) == self.partner:
+                top.append((piece, head))
+            else:
+                medium.append((piece, head))
+
+        for data in [top, medium, low]:
+            if data: 
+                return data
+
+
+class Passer(BasePlayer):
+    '''
+   Always tries the next player passes
+    '''
+    def __init__(self, name):
+        super().__init__(f"Passer::{name}")
+
+    def filter(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+        
+        heads = []
+        next_player_passed = {}
+        first_move = True
+        for e, *d in self.history:
+            if e.name == 'MOVE':
+                player, piece, head = d
+                if first_move:
+                    heads = list(piece)
+                    first_move = False
+                else:
+                    heads[head] = piece[piece[0] == heads[head]]
+            elif e.name =='PASS' and d[0] == self.next:
+                h0, h1 = heads
+                next_player_passed[h0] = True
+                next_player_passed[h1] = True
+
+        best, selected = -2, []
+        for piece, head in valids:
+            next_head = piece[piece[0] == self.heads[head]]
+            value = 0
+            value -= next_player_passed.get(self.heads[head], 0)
+            value += 2 * next_player_passed.get(next_head, 0)
+            if value > best:
+                best = value
+                selected.clear()
+            if value == best:
+                selected.append((piece, head))
+
+        return selected

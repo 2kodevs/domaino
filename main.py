@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import argparse
-from domaino import get_player, get_rule
+from domaino import get_player, get_rule, PLAYERS, RULES
 
 
 def info(args):

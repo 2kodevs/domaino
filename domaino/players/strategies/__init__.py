@@ -1,4 +1,4 @@
-from .simple import BigDrop, Frequent, Random, Repeater, TableCounter
+from .simple import BigDrop, Frequent, Random, Repeater, TableCounter, Passer, Supportive
 from .player_merge import MergeFactory
 from .simpleh import SimpleHybrid
 from .mc import MonteCarlo
@@ -12,6 +12,8 @@ PLAYERS = [
     MonteCarlo,
     Repeater,
     TableCounter,
+    Passer,
+    Supportive,
 ]
 
 def get_player(value, merge=True):
