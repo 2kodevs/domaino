@@ -59,20 +59,17 @@ class BasePlayer:
     def log(self, data):
         self.history.append(data)
 
-    def choice(self):
+    def choice(self, valids=None):
         """
-            Logic of each agent. This function will be called from `step` when
-            there is at least one valid piece. Notice that rules force player to
-            always make a move whenever is possible.
-
-            Player can access to current heads using `self.heads` or even full match history
-            through `self.history`
+            Select a random move from the player filtered ones
 
             Return:
                 piece:  (tuple<int>) Piece player is going to play. It must have it.
                 head:   (int in {0, 1}) What head is it going to put the piece. This will be ignored in the first move.
         """
-        raise NotImplementedError()
+        valids = self.filter(valids)
+        assert len(valids), "Player strategy return 0 options to select"
+        return random.choice(self.filter(valids))
 
     def score(self):
         """
@@ -82,6 +79,23 @@ class BasePlayer:
         for piece in self.pieces:
             result += piece[0] + piece[1]
         return result
+
+    def filter(self, valids=None):
+        """
+            Logic of each agent. This function given a set of valids move select the posible options. 
+            Notice that rules force player to always make a move whenever is possible.
+
+            Player can access to current heads using `self.heads` or even full match history
+            through `self.history`
+
+            Return:
+                List of:
+                    piece:  (tuple<int>) Piece player is going to play. It must have it.
+                    head:   (int in {0, 1}) What head is it going to put the piece. This will be ignored in the first move.
+        """
+        if valids is None:
+            return self.valid_moves()
+        return valids
 
     @property
     def me(self):
