@@ -6,6 +6,7 @@ from .supportive import Supportive
 from .player_merge import MergeFactory
 from .simpleh import SimpleHybrid
 from .mc import MonteCarlo
+from .less_played import LessPlayed
 
 # Add players to this list
 PLAYERS = [
@@ -18,6 +19,7 @@ PLAYERS = [
     TableCounter,
     Passer,
     Supportive,
+    LessPlayed,
 ]
 
 def get_player(value, merge=True):
