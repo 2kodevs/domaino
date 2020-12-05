@@ -162,7 +162,7 @@ class Supportive(BasePlayer):
         
         heads = []
         passed = {}
-        partner_pieces = {}
+        player_pieces = {}
         my_pieces = 0
         first_move = True
         for e, *d in self.history:
@@ -172,15 +172,17 @@ class Supportive(BasePlayer):
                     heads = piece
                     first_move = False
                 else:
-                    heads[head] = piece[0] if piece[1] == heads[head] else piece[1]
-                    if player == self.partner:
-                        partner_pieces[heads[head]] = partner_pieces.get(heads[head], 0) + 1
-                    elif player == self.me:
+                    heads[head] = piece[piece[0] == heads[head]]
+                    if player == self.me:
                         my_pieces += 1
+                    elif not player_pieces.get(heads[head]):
+                        player_pieces[heads[head]] = player
             elif e.name =='PASS' and d[0] == self.partner:
                 h0, h1 = heads
                 passed[h0] = True
                 passed[h1] = True
+
+        partner_pieces = list(filter(lambda _, p: p == self.partner, player_pieces.items()))
 
         #True if current_player is the hand
         if sum(partner_pieces.values()) <= my_pieces:
@@ -190,12 +192,12 @@ class Supportive(BasePlayer):
         medium = []
         low = []
         for piece, head in valids:
+            next_head = piece[piece[0] == heads[head]]
             if passed.get(self.heads[head]):
                 top.append((piece, head))
             elif partner_pieces.get(self.heads[head]):
                 low.append((piece, head))
-            elif (partner_pieces.get(piece[0]) and piece[0] != self.heads[head]) or \
-                (partner_pieces.get(piece[1]) and piece[1] != self.heads[head]):
+            elif partner_pieces[next_head]:
                 top.append((piece, head))
             else:
                 medium.append((piece, head))
