@@ -1,4 +1,4 @@
-from player import BasePlayer
+from ..player import BasePlayer
 import numpy as np
 
 
