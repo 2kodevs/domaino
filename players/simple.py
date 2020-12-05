@@ -147,3 +147,60 @@ class TableCounter(BigDrop):
                 data.append((piece, head))
                
         return super().choice(data)
+
+
+class Supportive(BasePlayer):
+    '''
+    When the other player of the team is the hand, plays for him.
+    '''
+    def __init__(self, name):
+        super().__init__(f"Supportive::{name}")
+
+    def filter(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+        
+        heads = []
+        passed = {}
+        partner_pieces = {}
+        my_pieces = 0
+        first_move = True
+        for e, *d in self.history:
+            if e.name == 'MOVE':
+                player, piece, head = d
+                if first_move:
+                    heads = piece
+                    first_move = False
+                else:
+                    heads[head] = piece[0] if piece[1] == heads[head] else piece[1]
+                    if player == self.partner:
+                        partner_pieces[heads[head]] = partner_pieces.get(heads[head], 0) + 1
+                    elif player == self.me:
+                        my_pieces += 1
+            elif e.name =='PASS' and d[0] == self.partner:
+                h0, h1 = heads
+                passed[h0] = h0
+                if h0 != h1:
+                    passed[h1] = h1
+
+        #True if current_player is the hand
+        if sum(partner_pieces.values()) < my_pieces:
+            return valids
+
+        top = []
+        medium = []
+        low = []
+        for piece, head in valids:
+            if passed.get(self.heads[head]):
+                top.append((piece, head))
+            elif partner_pieces.get(self.heads[head]):
+                low.append((piece, head))
+            elif (partner_pieces.get(piece[0]) and not piece[0] in self.heads) or \
+                (partner_pieces.get(piece[1]) and not piece[1] in self.heads):
+                top.append((piece, head))
+            else:
+                medium.append((piece, head))
+
+        if top != []:
+            return top
+        return medium if medium != [] else low
