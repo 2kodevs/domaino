@@ -1,4 +1,8 @@
-from .simple import BigDrop, Frequent, Random, Repeater, TableCounter, Passer, Supportive
+from .simple import BigDrop, Frequent, Random
+from .repeater import Repeater
+from .table_counter import TableCounter
+from .passer import Passer
+from .supportive import Supportive
 from .player_merge import MergeFactory
 from .simpleh import SimpleHybrid
 from .mc import MonteCarlo
