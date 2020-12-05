@@ -183,7 +183,7 @@ class Supportive(BasePlayer):
                 passed[h1] = True
 
         #True if current_player is the hand
-        if sum(partner_pieces.values()) < my_pieces:
+        if sum(partner_pieces.values()) <= my_pieces:
             return valids
 
         top = []
