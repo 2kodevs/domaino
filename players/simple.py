@@ -147,3 +147,45 @@ class TableCounter(BigDrop):
                 data.append((piece, head))
                
         return super().choice(data)
+
+class Passer(BasePlayer):
+    '''
+    When the other player of the team is the hand, plays for him.
+    '''
+    def __init__(self, name):
+        super().__init__(f"Passer::{name}")
+
+    def filter(self, valids=None):
+        if valids is None:
+            valids = self.valid_moves()
+        
+        heads = []
+        next_player_passed = {}
+        first_move = True
+        for e, *d in self.history:
+            if e.name == 'MOVE':
+                player, piece, head = d
+                if first_move:
+                    heads = piece
+                    first_move = False
+                else:
+                    heads[head] = piece[0] if piece[1] == heads[head] else piece[1]
+            elif e.name =='PASS' and d[0] == self.next:
+                h0, h1 = heads
+                next_player_passed[h0] = True
+                if h0 != h1:
+                    next_player_passed[h1] = True
+
+        best, selected = -2, []
+        for piece, head in valids:
+            value = 0
+            value -= next_player_passed.get(self.heads[head])
+            value += 2 * (next_player_passed.get(piece[0]) and piece[0] != self.heads[head]) or \
+                    (next_player_passed.get(piece[1]) and piece[1] != self.heads[head])
+            if value > best:
+                best = value
+                selected.clear()
+            if value == best:
+                selected.append((piece, head))
+
+        return selected
