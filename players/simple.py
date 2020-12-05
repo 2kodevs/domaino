@@ -179,9 +179,9 @@ class Supportive(BasePlayer):
                         my_pieces += 1
             elif e.name =='PASS' and d[0] == self.partner:
                 h0, h1 = heads
-                passed[h0] = h0
+                passed[h0] = True
                 if h0 != h1:
-                    passed[h1] = h1
+                    passed[h1] = True
 
         #True if current_player is the hand
         if sum(partner_pieces.values()) < my_pieces:
@@ -195,8 +195,8 @@ class Supportive(BasePlayer):
                 top.append((piece, head))
             elif partner_pieces.get(self.heads[head]):
                 low.append((piece, head))
-            elif (partner_pieces.get(piece[0]) and not piece[0] in self.heads) or \
-                (partner_pieces.get(piece[1]) and not piece[1] in self.heads):
+            elif (partner_pieces.get(piece[0]) and piece[0] != self.heads[head]) or \
+                (partner_pieces.get(piece[1]) and piece[1] != self.heads[head]):
                 top.append((piece, head))
             else:
                 medium.append((piece, head))
