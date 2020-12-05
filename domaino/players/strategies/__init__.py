@@ -26,4 +26,4 @@ def get_player(value, merge=True):
     except AssertionError: pass
     except ValueError: pass
         
-    raise ValueError(f"{value} not found in {[e.__name__ for e in elements]}")
+    raise ValueError(f"{value} not found in {[p.__name__ for p in PLAYERS]}")
