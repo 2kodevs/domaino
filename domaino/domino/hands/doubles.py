@@ -13,7 +13,8 @@ def doubles(max_number, pieces_per_player):
     pieces = [(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j]
     assert 4 * pieces_per_player <= len(pieces)
 
-    selected_doubles = sample(list(range(max_number + 1)), randint((max_number + 1) // 2, max_number - 1))
+    cant = min(max_number + 1, pieces_per_player) // 2
+    selected_doubles = sample(list(range(max_number + 1)), cant)
     selected_doubles = [(x, x) for x in selected_doubles]
     for x in selected_doubles:
         pieces.remove(x)
