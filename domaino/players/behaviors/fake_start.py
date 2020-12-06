@@ -11,7 +11,7 @@ class FakeStart(BasePlayer):
         valids = super().filter(valids)
 
         moves = sum(e.name in ['MOVE', 'PASS'] for e, *_ in self.history)
-        if moves == self.me:
+        if moves < 4:
             data = []
             for piece, head in valids:
                 val, _ = count_min(self, piece)
