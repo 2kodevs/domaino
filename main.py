@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
-from domaino import get_player, get_rule, PLAYERS, RULES, BEHAVIORS
+from domaino.domino import get_hand
+from domaino import get_player, get_rule, get_hand, PLAYERS, RULES, BEHAVIORS, HANDS
 
 
 def info(args):
@@ -8,13 +9,16 @@ def info(args):
             'Players:\n' + \
             ''.join([f'+ {player.__name__.lower()}\n' for player in PLAYERS]) + \
             '\n' + \
-            'Rules:\n' +\
+            'Rules:\n' + \
             ''.join([f'+ {rule.__name__.lower()}\n' for rule in RULES]) + \
             '\nOptionally you can merge some players into one passing any amount of them\n' + \
             'separated by a dash(-). Example: BigDrop-Repeater\n' + \
             'Also you can use some extra behaviors in your player mesures.\n' + \
             '\nAvailable behaviors:\n' + \
-            ''.join([f'+ {rule.__name__.lower()}\n' for rule in BEHAVIORS])
+            ''.join([f'+ {rule.__name__.lower()}\n' for rule in BEHAVIORS]) + \
+            '\n' + \
+            'Hands:\n' + \
+            ''.join([f'+ {hand.__name__.lower()}\n' for hand in HANDS])
     print(information)
 
 
@@ -23,8 +27,10 @@ def play(args):
     player1 = get_player(args.player1)
     rule = get_rule(args.rule)
 
+    hand = get_hand(args.hand)
+
     game = rule()
-    game.start(player0, player1, *args.pieces)
+    game.start(player0, player1, hand, *args.pieces)
 
 
 def main():
@@ -40,6 +46,7 @@ def main():
     play_parser.add_argument('-p1', '--player1', dest='player1', default='random')
     play_parser.add_argument('-r', '--rule', dest='rule', default='onegame')
     play_parser.add_argument('-n', '--nine', dest='pieces', action='store_const', const=[9,10], default=[])
+    play_parser.add_argument('-H', '--hand', dest='hand', default='hand_out')
     # play_parser.add_argument('-c', '--count', type=int, dest='count', default=1, help="Number of games to play")
     play_parser.set_defaults(command=play)
 

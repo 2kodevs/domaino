@@ -18,10 +18,10 @@ class OneGame:
     """
         Play one game
     """
-    def start(self, player0, player1, *pieces_config):
+    def start(self, player0, player1, hand, *pieces_config):
         env = DominoManager()
         players = [player0("0"), player1("1"), player0("2"), player1("3")]
-        return env.run(players, *pieces_config)
+        return env.run(players, hand, *pieces_config)
 
 
 class TwoOfThree:
@@ -31,7 +31,7 @@ class TwoOfThree:
     def __init__(self, random_start=True):
         self.random_start = random_start
 
-    def start(self, player0, player1, *pieces_config):
+    def start(self, player0, player1, hand, *pieces_config):
         env = DominoManager()
         players = [player0("0"), player1("1"), player0("2"), player1("3")]
 
@@ -46,7 +46,7 @@ class TwoOfThree:
         wins = [0, 0]
 
         while max(wins) < 2:
-            result = env.run(players, *pieces_config)
+            result = env.run(players, hand, *pieces_config)
 
             if result != -1:
                 wins[result ^ cur_start] += 1
@@ -70,7 +70,7 @@ class FirstToGain100:
     def update_score(self, **kwargs):
         return sum([player.score() for player in kwargs['players']])
 
-    def start(self, player0, player1, *pieces_config):
+    def start(self, player0, player1, hand, *pieces_config):
         env = DominoManager()
         players = [player0("0"), player1("1"), player0("2"), player1("3")]
 
@@ -85,7 +85,7 @@ class FirstToGain100:
         points = [0, 0]
 
         while max(points) < 100:
-            result = env.run(players, *pieces_config)
+            result = env.run(players, hand, *pieces_config)
 
             if result != -1:
                 loser = result ^ 1
