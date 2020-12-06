@@ -1,9 +1,8 @@
-from random import sample, randint, shuffle
+from random import sample, randint
 
 def share_data(max_number, pieces_per_player, high):
     data_num = randint([0, max_number // 2 + 1][high], [max_number // 2, max_number][high])
     data = [(min(data_num, i), max(data_num, i)) for i in sample(list(range(max_number + 1)), min(randint(max_number - 1, max_number + 1), pieces_per_player))]
-    shuffle(data)
 
     all_pieces = {(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j}
 
