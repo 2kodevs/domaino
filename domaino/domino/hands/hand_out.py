@@ -1,4 +1,4 @@
-from .player_view import PlayerView
+from ..player_view import PlayerView
 from random import sample
 
 def hand_out(max_number, pieces_per_player):
