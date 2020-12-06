@@ -5,7 +5,7 @@ class FakeStart(BasePlayer):
     ''' Select the pieces that have a number that is unique in the hand
     '''
     def __init__(self, name):
-        super().__init__(name)
+        super().__init__(f"FakeStart::{name}")
 
     def filter(self, valids=None):
         valids = super().filter(valids)
