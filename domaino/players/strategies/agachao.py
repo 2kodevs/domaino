@@ -1,4 +1,5 @@
 from ..player import BasePlayer
+from ..utils import count_min
 
 class Agachao(BasePlayer):
     ''' 
@@ -11,14 +12,6 @@ class Agachao(BasePlayer):
 
     def filter(self, valids=None):
         valids = super().filter(valids)
-
-        def count(piece):
-            cant = [0, 0]
-            for item in self.pieces:
-                cant[0] += (piece[0] in item)
-                cant[1] += (piece[1] in item)
-            val = min(cant)
-            return val, cant.index(val)
 
         heads = []
         first_move = True
@@ -39,7 +32,7 @@ class Agachao(BasePlayer):
 
         best, data = (-1, -1), []
         for piece, head in valids:
-            mn, i = count(piece)
+            mn, i = count_min(self, piece)
             value = (mn, amount_played.get(piece[i], 0))
             if value > best:
                 best = value
