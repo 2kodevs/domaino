@@ -1,7 +1,7 @@
 from ..player import BasePlayer
 
 class SmallDrop(BasePlayer):
-    """ Always drop piece with highest score
+    """ Always drop piece with lowest score
     """
     def __init__(self, name):
         super().__init__(f"SmallDrop::{name}")
