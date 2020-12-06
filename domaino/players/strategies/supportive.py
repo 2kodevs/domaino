@@ -8,8 +8,7 @@ class Supportive(BasePlayer):
         super().__init__(f"Supportive::{name}")
 
     def filter(self, valids=None):
-        if valids is None:
-            valids = self.valid_moves()
+        valids = super().filter(valids)
         
         heads = []
         passed = {}

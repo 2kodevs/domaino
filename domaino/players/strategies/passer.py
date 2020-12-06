@@ -8,8 +8,7 @@ class Passer(BasePlayer):
         super().__init__(f"Passer::{name}")
 
     def filter(self, valids=None):
-        if valids is None:
-            valids = self.valid_moves()
+        valids = super().filter(valids)
         
         heads = []
         next_player_passed = {}
