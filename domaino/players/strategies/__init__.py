@@ -10,6 +10,7 @@ from .less_played import LessPlayed
 from .data_keeper import DataKeeper
 from .small_drop import SmallDrop
 from .agachao import Agachao
+from .data_dropper import DataDropper
 
 # Add players to this list
 PLAYERS = [
@@ -26,4 +27,5 @@ PLAYERS = [
     DataKeeper,
     SmallDrop,
     Agachao,
+    DataDropper,
 ]
