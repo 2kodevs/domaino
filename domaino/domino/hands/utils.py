@@ -23,3 +23,4 @@ def share_data(max_number, pieces_per_player, high):
     temp_hands = [hand[i:i+pieces_per_player] for i in range(0, 2 * pieces_per_player, pieces_per_player)]
 
     return (hand0, hand1, temp_hands)
+    
