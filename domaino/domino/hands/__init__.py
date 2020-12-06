@@ -1,9 +1,15 @@
 from .hand_out import hand_out
 from .no_doubles import no_doubles
+from .data_partner import data_partner, data_partner_low
+from .data_oponent import data_oponent, data_oponent_low
 
 HANDS = [
     hand_out,
     no_doubles,
+    data_partner,
+    data_partner_low,
+    data_oponent,
+    data_oponent_low,
 ]
 
 def get_hand(value):
