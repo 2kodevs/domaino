@@ -27,4 +27,4 @@ def data_low(max_number, pieces_per_player):
     return data(max_number, pieces_per_player, False)
 
 def data_zero(max_number, pieces_per_player):
-    return data(max_number, pieces_per_player, True, 0)
+    return data(max_number, pieces_per_player, number=0)
