@@ -11,6 +11,7 @@ from .data_keeper import DataKeeper
 from .small_drop import SmallDrop
 from .agachao import Agachao
 from .data_dropper import DataDropper
+from .always_double import AlwaysDouble
 
 # Add players to this list
 PLAYERS = [
@@ -28,4 +29,5 @@ PLAYERS = [
     SmallDrop,
     Agachao,
     DataDropper,
+    AlwaysDouble
 ]
