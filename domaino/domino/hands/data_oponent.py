@@ -3,8 +3,8 @@ from random import sample, randint, shuffle
 
 def data_opponent(max_number, pieces_per_player, high=True):
     """
-    Randomly distribute pieces among every player.
     Share a high data or a low data with a oponent
+    Randomly distribute pieces among other player.
     Valid pieces are all integer tuples of the form:
         (i, j) 0 <= i <= j <= max_number
     Each player will have `pieces_per_player`.

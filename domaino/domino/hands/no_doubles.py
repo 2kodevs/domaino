@@ -3,8 +3,8 @@ from random import sample
 
 def no_doubles(max_number, pieces_per_player):
     """
-    Randomly distribute pieces among every player.
     Player 0 will have no doubles.
+    Randomly distribute pieces among every player.
     Valid pieces are all integer tuples of the form:
         (i, j) 0 <= i <= j <= max_number
     Each player will have `pieces_per_player`.
