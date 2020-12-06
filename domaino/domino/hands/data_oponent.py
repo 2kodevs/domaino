@@ -1,7 +1,7 @@
 from ..player_view import PlayerView
 from random import sample, randint, shuffle
 
-def data_oponent(max_number, pieces_per_player, high=True):
+def data_opponent(max_number, pieces_per_player, high=True):
     """
     Randomly distribute pieces among every player.
     Share a high data or a low data with a oponent
@@ -43,6 +43,6 @@ def data_oponent(max_number, pieces_per_player, high=True):
         print(h)
     return [PlayerView(h) for h in hands]
 
-def data_oponent_low(max_number, pieces_per_player):
-    return data_oponent(max_number, pieces_per_player, high=False)
+def data_opponent_low(max_number, pieces_per_player):
+    return data_opponent(max_number, pieces_per_player, high=False)
     
