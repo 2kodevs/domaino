@@ -22,7 +22,6 @@ class Higher(BasePlayer):
         filtered = [(num, c) for num, c in cant.items()]
 
         best = max(filtered)[0]
-        best = max([(c, num) for num, c in filtered if num == best])[1]
         pieces = [p for p in self.pieces if best in p]
 
         if (best, best) in pieces:
