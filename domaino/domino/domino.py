@@ -5,6 +5,7 @@ from copy import deepcopy
 from enum import Enum
 
 from ..common.logger import add_logger, INFO
+from .player_view import PlayerView
 
 logger = add_logger("domino", INFO)
 
@@ -33,41 +34,6 @@ class Event(Enum):
     # Report winner
     # params: (team) team=0(First team) team=1(Second team) team=-1(Tie)
     WIN = 5
-
-
-class PlayerView:
-    def __init__(self, pieces):
-        self.pieces = pieces
-        self.remaining = set(pieces)
-        self.nums = {}
-        # Doubles are counted twice
-        for (x, y) in pieces:
-            self.nums[x] = self.nums.get(x, 0) + 1
-            self.nums[y] = self.nums.get(y, 0) + 1
-
-    def have_num(self, num):
-        return self.nums.get(num, 0) > 0
-
-    def have_piece(self, piece):
-        return piece in self.remaining
-
-    def remove(self, piece):
-        # Only call this function if the player has such piece
-        self.remaining.remove(piece)
-        (x, y) = piece
-        self.nums[x] -= 1
-        self.nums[y] -= 1
-
-    def total(self):
-        return len(self.remaining)
-
-    def have_move(self, piece):
-        (x, y) = piece
-        return self.have_num(x) or self.have_num(y)
-
-    def points(self):
-        return sum(sum(piece) for piece in self.remaining)
-
 
 class Domino:
     """
@@ -103,10 +69,10 @@ class Domino:
         assert self.logs[-1][0] == Event.WIN
         return self.logs[-1][1]
 
-    def reset(self, max_number=6, pieces_per_player=7):
+    def reset(self, hand, max_number=6, pieces_per_player=7):
         self.max_number = max_number
         self.pieces_per_player = pieces_per_player
-        self.players = hand_out(self.max_number, self.pieces_per_player)
+        self.players = hand(self.max_number, self.pieces_per_player)
 
         self.logs = []
         self.heads = [-1, -1]
@@ -203,12 +169,12 @@ class DominoManager:
                 player.log(data)
             self.logs_transmitted += 1
 
-    def run(self, players, *pieces_config):
+    def run(self, players, hand, *pieces_config):
         self.logs_transmitted = 0
         self.players = players
         self.domino = Domino()
 
-        self.domino.reset(*pieces_config)
+        self.domino.reset(hand, *pieces_config)
 
         for i, player in enumerate(players):
             player.reset(i, self.domino.players[i].pieces[:])
@@ -223,16 +189,3 @@ class DominoManager:
             self.feed_logs()
 
         return self.domino.winner
-
-def hand_out(max_number, pieces_per_player):
-    """
-    Randomly distribute pieces among every player.
-    Valid pieces are all integer tuples of the form:
-        (i, j) 0 <= i <= j <= max_number
-    Each player will have `pieces_per_player`.
-    """
-    pieces = [(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j]
-    assert 4 * pieces_per_player <= len(pieces)
-    hand = random.sample(pieces, 4 * pieces_per_player)
-    hands = [hand[i:i+pieces_per_player] for i in range(0, 4 * pieces_per_player, pieces_per_player)]
-    return [PlayerView(h) for h in hands]
