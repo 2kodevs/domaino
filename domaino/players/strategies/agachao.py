@@ -15,8 +15,8 @@ class Agachao(BasePlayer):
         def count(piece):
             cant = [0, 0]
             for item in self.pieces:
-                cant[0] += (item[0] == piece[0] or item[1] == piece[0])
-                cant[1] += (item[0] == piece[1] or item[1] == piece[1])
+                cant[0] += (piece[0] in item)
+                cant[1] += (piece[1] in item)
             val = min(cant)
             return val, cant.index(val)
 
@@ -50,4 +50,3 @@ class Agachao(BasePlayer):
         return data
                 
                     
-
