@@ -8,7 +8,7 @@ def doubles(max_number, pieces_per_player):
         (i, j) 0 <= i <= j <= max_number
     Each player will have `pieces_per_player`.
 
-    Player0 always get 5 or more doubles.
+    Player0 always gets 5 or more doubles.
     """
     pieces = [(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j]
     assert 4 * pieces_per_player <= len(pieces)
