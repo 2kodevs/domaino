@@ -1,7 +1,7 @@
 from ..player_view import PlayerView
 from random import sample, choice
 
-def data(max_number, pieces_per_player, high=True):
+def data(max_number, pieces_per_player, high=True, number=-1):
     """
     Force player0 to have at least half of his pieces of the same number.
     Randomly distribute pieces among the other players.
@@ -9,9 +9,10 @@ def data(max_number, pieces_per_player, high=True):
         (i, j) 0 <= i <= j <= max_number
     Each player will have `pieces_per_player`.
     """
-
+    
     mid = (max_number + 1) // 2 + 1
     data_number = choice(list(range([0, mid][high], [mid, max_number + 1][high])))
+    data_number = [data_number, number][number >= 0 and number <= max_number]
     cant = min(max_number + 1, pieces_per_player) // 2
     hand = [(min(data_number, i), max(data_number, i)) for i in sample(list(range(max_number + 1)), cant)]
 
@@ -24,4 +25,6 @@ def data(max_number, pieces_per_player, high=True):
 
 def data_low(max_number, pieces_per_player):
     return data(max_number, pieces_per_player, False)
-    
+
+def data_zero(max_number, pieces_per_player):
+    return data(max_number, pieces_per_player, True, 0)
