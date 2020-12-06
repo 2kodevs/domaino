@@ -2,7 +2,7 @@ from ..player import BasePlayer
 
 class DataDropper(BasePlayer):
     '''
-    Player who drop his most repeated pieces.
+    Player who drops his most repeated pieces.
     '''
     def __init__(self, name):
         super().__init__(f"DataDropper::{name}")
