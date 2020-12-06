@@ -1,5 +1,5 @@
 from ..player_view import PlayerView
-import random
+from random import sample, randint
 
 def doubles(max_number, pieces_per_player):
     """
@@ -13,12 +13,12 @@ def doubles(max_number, pieces_per_player):
     pieces = [(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j]
     assert 4 * pieces_per_player <= len(pieces)
 
-    selected_doubles = random.sample(list(range(max_number + 1)), random.randint((max_number + 1) // 2, max_number - 1))
+    selected_doubles = sample(list(range(max_number + 1)), randint((max_number + 1) // 2, max_number - 1))
     selected_doubles = [(x, x) for x in selected_doubles]
     print(selected_doubles)
     for x in selected_doubles:
         pieces.remove(x)
-    hand = random.sample(pieces, 4 * pieces_per_player - len(selected_doubles))
+    hand = sample(pieces, 4 * pieces_per_player - len(selected_doubles))
     hand = [*selected_doubles, *hand]
     hands = [hand[i:i+pieces_per_player] for i in range(0, 4 * pieces_per_player, pieces_per_player)]
     return [PlayerView(h) for h in hands]
