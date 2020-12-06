@@ -22,7 +22,8 @@ class DataDropper(BasePlayer):
         best, selected = ([-1], -1), []
         for piece, head in valids:
             heads = self.heads[:]
-            heads[head] = piece[piece[0] == heads[head]]
+            if heads == [-1, -1]: heads = list(piece)
+            else: heads[head] = piece[piece[0] == heads[head]]
             values = [datas.get(num, 0) for num in heads]
             values.sort(reverse=True)
             value = (values, datas.get(self.heads[head], 0) != bigger_data)
