@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import argparse
-from domaino import get_player, get_rule, PLAYERS, RULES
+from domaino import get_player, get_rule, PLAYERS, RULES, BEHAVIORS
 
 
 def info(args):
@@ -9,7 +9,12 @@ def info(args):
             ''.join([f'+ {player.__name__.lower()}\n' for player in PLAYERS]) + \
             '\n' + \
             'Rules:\n' +\
-            ''.join([f'+ {rule.__name__.lower()}\n' for rule in RULES])
+            ''.join([f'+ {rule.__name__.lower()}\n' for rule in RULES]) + \
+            '\nOptionally you can merge some players into one passing any amount of them\n' + \
+            'separated by a dash(-). Example: BigDrop-Repeater\n' + \
+            'Also you can use some extra behaviors in your player mesures.\n' + \
+            '\nAvailable behaviors:\n' + \
+            ''.join([f'+ {rule.__name__.lower()}\n' for rule in BEHAVIORS])
     print(information)
 
 
