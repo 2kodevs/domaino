@@ -1,10 +1,15 @@
 from .hand_out import hand_out
+from .doubles import doubles
+from .data import data, data_low
 from .no_doubles import no_doubles
 from .data_partner import data_partner, data_partner_low
 from .data_opponent import data_opponent, data_opponent_low
 
 HANDS = [
     hand_out,
+    doubles,
+    data,
+    data_low,
     no_doubles,
     data_partner,
     data_partner_low,
