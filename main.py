@@ -23,8 +23,11 @@ def play(args):
     player1 = get_player(args.player1)
     rule = get_rule(args.rule)
 
-    game = rule()
-    game.start(player0, player1, *args.pieces)
+    wins = {-1:0, 0:0, 1:0}
+    for _ in range(args.rep):
+        game = rule()
+        wins[game.start(player0, player1, *args.pieces)] += 1
+    print(wins)
 
 
 def main():
@@ -36,10 +39,11 @@ def main():
     info_parser.set_defaults(command=info)
 
     play_parser = subparsers.add_parser('play', help="Run a dominoe game")
-    play_parser.add_argument('-p0', '--player0', dest='player0', default='random')
-    play_parser.add_argument('-p1', '--player1', dest='player1', default='random')
-    play_parser.add_argument('-r', '--rule', dest='rule', default='onegame')
-    play_parser.add_argument('-n', '--nine', dest='pieces', action='store_const', const=[9,10], default=[])
+    play_parser.add_argument('-p0',  '--player0',     dest='player0', default='random')
+    play_parser.add_argument('-p1',  '--player1',     dest='player1', default='random')
+    play_parser.add_argument('-r',   '--rule',        dest='rule',    default='onegame')
+    play_parser.add_argument('-n',   '--nine',        dest='pieces',  action='store_const', const=[9,10], default=[])
+    play_parser.add_argument('-rep', '--repetitions', dest='rep',     type=int, default=1)
     # play_parser.add_argument('-c', '--count', type=int, dest='count', default=1, help="Number of games to play")
     play_parser.set_defaults(command=play)
 
