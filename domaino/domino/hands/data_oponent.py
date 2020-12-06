@@ -9,10 +9,7 @@ def data_opponent(max_number, pieces_per_player, high=True):
         (i, j) 0 <= i <= j <= max_number
     Each player will have `pieces_per_player`.
     """
-    if high:
-        data_num = randint(max_number // 2 + 1, max_number)
-    else:
-        data_num = randint(0, max_number // 2)
+    data_num = randint([0, max_number // 2 + 1][high], [max_number // 2, max_number][high])
     data = [(min(data_num, i), max(data_num, i)) for i in sample(list(range(max_number + 1)), min(randint(max_number - 1, max_number + 1), pieces_per_player)]
     shuffle(data)
 
