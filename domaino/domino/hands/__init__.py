@@ -1,7 +1,9 @@
 from .hand_out import hand_out
+from .data import data
 
 HANDS = [
     hand_out,
+    data,
 ]
 
 def get_hand(value):
