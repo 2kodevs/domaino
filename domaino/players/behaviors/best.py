@@ -2,7 +2,7 @@ from ..player import BasePlayer
 from random import choice
 
 class Best(BasePlayer):
-    ''' Play higher better accompanied if posible as the first move of the game
+    ''' Play higher better accompanied if possible as the first move of the game
     '''
     def __init__(self, name):
         super().__init__(f'Best::{name}')
