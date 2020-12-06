@@ -15,7 +15,6 @@ def doubles(max_number, pieces_per_player):
 
     selected_doubles = sample(list(range(max_number + 1)), randint((max_number + 1) // 2, max_number - 1))
     selected_doubles = [(x, x) for x in selected_doubles]
-    print(selected_doubles)
     for x in selected_doubles:
         pieces.remove(x)
     hand = sample(pieces, 4 * pieces_per_player - len(selected_doubles))
