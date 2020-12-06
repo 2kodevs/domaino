@@ -89,7 +89,7 @@ class FirstToGain100:
 
             if result != -1:
                 loser = result ^ 1
-                points[result] += self.update_score(
+                points[result ^ cur_start] += self.update_score(
                     players=[players[loser], players[loser + 2]],
                     domino=env.domino,
                 )
