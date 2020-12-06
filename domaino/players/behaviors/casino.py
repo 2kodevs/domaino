@@ -1,7 +1,7 @@
 from ..player import BasePlayer
 
 class Casino(BasePlayer):
-    ''' Play doble white if posible as the first move of the game
+    ''' Play doble white if possible as the first move of the game
     '''
     def __init__(self, name):
         super().__init__(f'Casino::{name}')
