@@ -15,9 +15,8 @@ def doubles(max_number, pieces_per_player):
 
     cant = min(max_number + 1, pieces_per_player) // 2
     selected_doubles = sample(list(range(max_number + 1)), cant)
-    selected_doubles = [(x, x) for x in selected_doubles]
-    for x in selected_doubles:
-        pieces.remove(x)
+    selected_doubles = {(x, x) for x in selected_doubles}
+    pieces = list(set(pieces) - selected_doubles)
     hand = sample(pieces, 4 * pieces_per_player - len(selected_doubles))
     hand = [*selected_doubles, *hand]
     hands = [hand[i:i+pieces_per_player] for i in range(0, 4 * pieces_per_player, pieces_per_player)]
