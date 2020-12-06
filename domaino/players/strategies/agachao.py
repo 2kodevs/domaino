@@ -22,14 +22,15 @@ class Agachao(BasePlayer):
 
         heads = []
         first_move = True
-        lru = {}
+        amount_played = {}
 
         for e, *d in self.history:
             if e.name == 'MOVE':
                 player, piece, head = d
                 if player == self.me:
-                    lru[piece[0]] = lru.get(piece[0], 0) + 1
-                    lru[piece[1]] = lru.get(piece[1], 0) + 1
+                    amount_played[piece[0]] = amount_played.get(piece[0], 0) + 1
+                    if piece[0] != piece[1]:
+                        amount_played[piece[1]] = amount_played.get(piece[1], 0) + 1
                 if first_move:
                     heads = list(piece)
                     first_move = False
@@ -39,7 +40,7 @@ class Agachao(BasePlayer):
         best, data = (-1, -1), []
         for piece, head in valids:
             mn, i = count(piece)
-            value = (mn, lru.get(piece[i], 0))
+            value = (mn, amount_played.get(piece[i], 0))
             if value > best:
                 best = value
                 data.clear()
