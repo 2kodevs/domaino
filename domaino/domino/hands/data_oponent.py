@@ -34,10 +34,7 @@ def data_opponent(max_number, pieces_per_player, high=True):
     oponent_hands = [handO, temp_hands[0]]
     shuffle(oponent_hands)
 
-    hands = [hand0]
-    hands += [oponent_hands[0]]
-    hands += [temp_hands[1]]
-    hands += [oponent_hands[1]]
+    hands = [hand0, oponent_hands[0], temp_hands[1], oponent_hands[1]]
 
     for h in hands:
         print(h)
