@@ -20,3 +20,6 @@ def data(max_number, pieces_per_player, high=True):
     hand.extend(sample(pieces, 4 * pieces_per_player - len(hand)))
     hands = [hand[i:i+pieces_per_player] for i in range(0, 4 * pieces_per_player, pieces_per_player)]
     return [PlayerView(h) for h in hands]
+
+def data_low(max_number, pieces_per_player):
+    return data(max_number, pieces_per_player, False)
