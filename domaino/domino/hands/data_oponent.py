@@ -13,7 +13,7 @@ def data_opponent(max_number, pieces_per_player, high=True):
         data_num = randint(max_number // 2 + 1, max_number)
     else:
         data_num = randint(0, max_number // 2)
-    data = [(min(data_num, i), max(data_num, i)) for i in sample(list(range(pieces_per_player)), randint(max_number - 1, max_number + 1) )]
+    data = [(min(data_num, i), max(data_num, i)) for i in sample(list(range(max_number + 1)), min(randint(max_number - 1, max_number + 1), pieces_per_player)]
     shuffle(data)
 
     all_pieces = {(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j}
