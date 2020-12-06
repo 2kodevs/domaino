@@ -1,8 +1,10 @@
 from .hand_out import hand_out
+from .doubles import doubles
 from .data import data, data_low
 
 HANDS = [
     hand_out,
+    doubles,
     data,
     data_low,
 ]
