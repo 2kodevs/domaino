@@ -11,7 +11,7 @@ def data(max_number, pieces_per_player, high=True):
     """
 
     mid = (max_number + 1) // 2 + 1
-    data_number = choice(list(range(0 + mid * high, mid + (max_number + 1 - mid) * high)))
+    data_number = choice(list(range([0, mid][high], [mid, max_number + 1][high])))
     hand = [(min(data_number, i), max(data_number, i)) for i in sample(list(range(max_number + 1)), 5)]
 
     pieces = [(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j and (i, j) not in hand]
