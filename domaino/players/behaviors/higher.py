@@ -20,13 +20,9 @@ class Higher(BasePlayer):
             cant[p0] = cant.get(p0, 0) + 1
 
         filtered = [(num, c) for num, c in cant.items()]
-        filtered.sort(reverse=True)
 
-        best = filtered[0][0]
-        filtered = [(c, num) for num, c in filtered if num == best]
-        filtered.sort(reverse=True)
-
-        best = filtered[0][1]
+        best = max(filtered)[0]
+        best = max([(c, num) for num, c in filtered if num == best])[1]
         pieces = [p for p in self.pieces if best in p]
 
         if (best, best) in pieces:

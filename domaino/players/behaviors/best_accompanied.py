@@ -20,16 +20,12 @@ class BestAccompanied(BasePlayer):
             cant[p0] = cant.get(p0, 0) + 1
 
         filtered = [(c, num) for num, c in cant.items() if c >= 2]
-        filtered.sort(reverse=True)
 
         if not filtered:
             return valids
         
-        best = filtered[0][0]
-        filtered = [(num, c) for c, num in filtered if c == best]
-        filtered.sort(reverse=True)
-
-        best = filtered[0][0]
+        best = max(filtered)[0]
+        best = max([(num, c) for c, num in filtered if c == best])[0]
         pieces = [p for p in self.pieces if best in p]
 
         if (best, best) in pieces:
