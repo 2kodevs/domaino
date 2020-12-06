@@ -33,6 +33,6 @@ class Best(BasePlayer):
         pieces = [p for p in self.pieces if best in p]
 
         if (best, best) in pieces:
-            return (best, best)
-        return choice(pieces)
+            return [((best, best), 0)]
+        return [(p, 0) for p in pieces]
     

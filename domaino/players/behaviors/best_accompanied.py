@@ -1,11 +1,11 @@
 from ..player import BasePlayer
 from random import choice
 
-class Higher(BasePlayer):
-    ''' Play higher if possible as the first move of the game
+class BestAccompanied(BasePlayer):
+    ''' Play higher better accompanied if possible as the first move of the game
     '''
     def __init__(self, name):
-        super().__init__(f'Higher::{name}')
+        super().__init__(f'BestAccompanied::{name}')
 
     def filter(self, valids=None):
         valids = super().filter(valids)
@@ -19,14 +19,17 @@ class Higher(BasePlayer):
                 cant[p1] = cant.get(p1, 0) + 1
             cant[p0] = cant.get(p0, 0) + 1
 
-        filtered = [(num, c) for num, c in cant.items()]
+        filtered = [(c, num) for num, c in cant.items() if c >= 2]
+        filtered.sort(reverse=True)
+
+        if not filtered:
+            return valids
+        
+        best = filtered[0][0]
+        filtered = [(num, c) for c, num in filtered if c == best]
         filtered.sort(reverse=True)
 
         best = filtered[0][0]
-        filtered = [(c, num) for num, c in filtered if num == best]
-        filtered.sort(reverse=True)
-
-        best = filtered[0][1]
         pieces = [p for p in self.pieces if best in p]
 
         if (best, best) in pieces:
