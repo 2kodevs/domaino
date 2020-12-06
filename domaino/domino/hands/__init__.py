@@ -1,7 +1,9 @@
 from .hand_out import hand_out
+from .no_doubles import no_doubles
 
 HANDS = [
     hand_out,
+    no_doubles,
 ]
 
 def get_hand(value):
