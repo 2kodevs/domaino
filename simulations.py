@@ -1,4 +1,4 @@
-from domaino import RULES, PLAYERS, BEHAVIORS, BasePlayer, get_player
+from domaino import RULES, PLAYERS, BEHAVIORS, get_player
 from main import play
 import json
 
