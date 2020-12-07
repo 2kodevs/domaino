@@ -3,7 +3,7 @@ from random import sample
 
 def data_zero(max_number, pieces_per_player):
     """
-    Force player0 to have at least half of his pieces of the same number.
+    Force player0 to have at least half of his pieces of zero number, including double zero.
     Randomly distribute pieces among the other players.
     Valid pieces are all integer tuples of the form:
         (i, j) 0 <= i <= j <= max_number
