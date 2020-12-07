@@ -59,7 +59,7 @@ class Domino:
 
     def log(self, *data):
         event, *params = data
-        logger.info(f"{event.name}: {params}")
+        # logger.info(f"{event.name}: {params}")
         self.logs.append(data)
 
     def get_pieces(self):

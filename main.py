@@ -28,11 +28,12 @@ def play(args):
     rule = get_rule(args.rule)
     hand = get_hand(args.hand)
 
-    wins = {-1:0, 0:0, 1:0}
+    status = {-1:0, 0:0, 1:0}
     for _ in range(args.rep):
         game = rule()
-        wins[game.start(player0, player1, hand, *args.pieces)] += 1
-    print(wins)
+        status[game.start(player0, player1, hand, *args.pieces)] += 1
+    return status
+
 
 def main():
     parser = argparse.ArgumentParser("DomAIno")
@@ -59,6 +60,7 @@ def main():
         parser.print_help()
     else:
         args.command(args)
+
 
 if __name__ == '__main__':
     main()
