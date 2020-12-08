@@ -37,7 +37,6 @@ def play(args):
 
 def main():
     parser = argparse.ArgumentParser("DomAIno")
-    parser.add_argument
 
     subparsers = parser.add_subparsers()
     info_parser = subparsers.add_parser('info', help="Show available Players and Rules")

@@ -2,7 +2,6 @@ from domaino.players import strategies
 from domaino import RULES, PLAYERS, BEHAVIORS, get_player
 from main import play
 import json
-import argparse
 
 class Arguments: pass
 non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
@@ -10,6 +9,13 @@ non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
 prefix = ["", "Supportive-"]
 non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
 random = get_player('random')
+
+interesting_data = [
+    [False, 'data_zero', ('Casino', 'Casino-Supportive-DataDropper'), ('BigDrop', 'Supportive-BigDrop')],
+    [True,  'data_opponent', ('DataDropper', 'Supportive-DataDropper'), ('DataKeeper', 'Supportive-DataKeeper')],
+    [False, 'data_partner', ('DataDropper', 'Supportive-DataDropper')],
+    [False, 'doubles', ('AlwaysDouble', 'AlwaysDouble-Supportive')]
+]
 
 def all(args):
     data = {}
@@ -20,13 +26,13 @@ def all(args):
             for b in [random, *BEHAVIORS]:
                 if b.__name__ in non_valid:
                     continue
-                d4 = d1[b.__name__] = {}
+                d2 = d1[b.__name__] = {}
                 for idx, t in enumerate(['Normal', 'Supportive']):
-                    d2 = d4[t] = {}
+                    d3 = d2[t] = {}
                     for p0 in PLAYERS:
                         if p0.__name__ in non_valid:
                             continue
-                        d3 = d2[p0.__name__] = {}
+                        d4 = d3[p0.__name__] = {}
                         for p1 in PLAYERS:
                             if p1.__name__ in non_valid:
                                 continue
@@ -37,12 +43,11 @@ def all(args):
                             args.rep     = 500
                             args.pieces  = g[1]
                             args.hand    = 'hand_out'
-                            d3[p1.__name__] = play(args)[0] / 5
-    json.dump(data, open('data.json', 'w'), indent=4)
+                            d4[p1.__name__] = play(args)[0] / 5
+    json.dump(data, open('json_data/data.json', 'w'), indent=4)
 
-def casino_vs_bota():
+def sim(swap, hand, *players):
     data = {}
-    players = [('Casino', 'Casino-Supportive-DataDropper'), ('BigDrop', 'Supportive-BigDrop')]
     for p1 in players:
         d1 = data[p1[0]] = {}
         for p2 in PLAYERS:
@@ -54,118 +59,35 @@ def casino_vs_bota():
             args.rule    = "OneGame"
             args.rep     = 500
             args.pieces  = [9, 10]
-            args.hand    = 'data_zero'
+            args.hand    = hand
+            if swap: 
+                args.player0, args.player1 = args.player1, args.player0
             d1[p2.__name__] = play(args)[0] / 5
-    json.dump(data, open('data_casino.json', 'w'), indent=4)
+    json.dump(data, open(f'json_data/{hand}.json', 'w'), indent=4)
 
-    
-def sim_data_opponent(args):
-    data = {}
-
-    d0 = {}
-    for b in [random, *BEHAVIORS]:
-        if b.__name__ in non_valid:
-            continue
-        d1 = d0[b.__name__] = {}
-        for idx, t in enumerate(['Normal', 'Supportive']):
-            d2 = d1[t] = {}
-            for p0 in ['DataDropper', 'DataKeeper']:
-                d3 = d2[p0] = {}
-                for p1 in PLAYERS:
-                    if p1.__name__ in non_valid:
-                        continue
-                    args = Arguments()
-                    args.player0 = f'{b.__name__}-{prefix[idx]}{p0}'
-                    args.player1 = f'{b.__name__}-{prefix[idx]}{p1.__name__}'
-                    args.rule    = 'OneGame'
-                    args.rep     = 500
-                    args.pieces  = ('9x9', [9,10])
-                    args.hand    = 'data_opponent'
-                    d3[p1.__name__] = play(args)[0] / 5
-    json.dump(data, open('data.json', 'w'), indent=4)
-
-def sim_data_partner(args):
-    data = {}
-
-    d0 = {}
-    for b in [random, *BEHAVIORS]:
-        if b.__name__ in non_valid:
-            continue
-        d1 = d0[b.__name__] = {}
-        for idx, t in enumerate(['Normal', 'Supportive']):
-            d2 = d1[t] = {}
-            for p1 in PLAYERS:
-                if p1.__name__ in non_valid:
-                    continue
-                args = Arguments()
-                args.player0 = f'best-Supportive-DataDropper'
-                args.player1 = f'{b.__name__}-{prefix[idx]}{p1.__name__}'
-                args.rule    = 'OneGame'
-                args.rep     = 500
-                args.pieces  = ('9x9', [9,10])
-                args.hand    = 'data_partner'
-                d2[p1.__name__] = play(args)[0] / 5
-        
-    json.dump(data, open('data.json', 'w'), indent=4)
-
-def sim_doubles(args):
-    data = {}
-
-    d0 = {}
-    for b in [random, *BEHAVIORS]:
-        if b.__name__ in non_valid:
-            continue
-        d1 = d0[b.__name__] = {}
-        for idx, t in enumerate(['Normal', 'Supportive']):
-            d2 = d1[t] = {}
-            for p1 in PLAYERS:
-                if p1.__name__ in non_valid:
-                    continue
-                args = Arguments()
-                args.player0 = f'BestAccompanied-AlwaysDouble'
-                args.player1 = f'{b.__name__}-{prefix[idx]}{p1.__name__}'
-                args.rule    = 'OneGame'
-                args.rep     = 500
-                args.pieces  = ('9x9', [9,10])
-                args.hand    = 'doubles'
-                d2[p1.__name__] = play(args)[0] / 5
-        
-    json.dump(data, open('data.json', 'w'), indent=4)
-
-def sim_data_opponent(args):
-    data = {}
-    players = ['Casino-DataDropper', 'BigDrop']
-
-    d0 = {}
-    for b in [random, *BEHAVIORS]:
-        if b.__name__ in non_valid:
-            continue
-        d1 = d0[b.__name__] = {}
-        for idx, t in enumerate(['Normal', 'Supportive']):
-            d2 = d1[t] = {}
-            for i, p0 in enumerate(['DataDropper', 'BigDrop']):
-                d3 = d2[p0] = {}
-                for p1 in PLAYERS:
-                    if p1.__name__ in non_valid:
-                        continue
-                    args = Arguments()
-                    args.player0 = players[i]
-                    args.player1 = f'{b.__name__}-{prefix[idx]}{p1.__name__}'
-                    args.rule    = 'OneGame'
-                    args.rep     = 500
-                    args.pieces  = ('9x9', [9,10])
-                    args.hand    = 'data_zero'
-                    d3[p1.__name__] = play(args)[0] / 5
-    json.dump(data, open('data.json', 'w'), indent=4)
-
-def main():
-    parser = argparse.ArgumentParser("DomAIno-Simulations")
-    parser.add_argument
-
-    subparsers = parser.add_subparsers()
-    all_parser = subparsers.add_parser('all_vs_all', help="Play every posible combination of a strategies against" + \
-                                        "all strategies")
-    all_parser.set_defaults(command=all)
+def custom(args):
+    if 0 <= args.number < len(interesting_data):
+        sim(*interesting_data[args.number])
+    else:
+        for test in interesting_data:
+            sim(*test)
 
 if __name__ == "__main__":
-    casino_vs_bota()
+    import argparse
+
+    parser = argparse.ArgumentParser("DomAIno-simulations")
+
+    subparsers = parser.add_subparsers()
+    all_parser = subparsers.add_parser('all', help="Run a big suite of cases using different domino sizes, rules, player startegies and behaviors")
+    all_parser.set_defaults(command=all)
+
+    custom_parser = subparsers.add_parser('custom', help="Run a suite of interesting cases, listed in the array `interesting-data`")
+    custom_parser.add_argument('-n',  '--number', type=int, default=-1, help='Test number in range [0, 4]')
+    custom_parser.set_defaults(command=custom)
+
+    args = parser.parse_args()
+
+    if not hasattr(args, 'command'):
+        parser.print_help()
+    else:
+        args.command(args)
