@@ -1,10 +1,12 @@
+from domaino.players import strategies
 from domaino import RULES, PLAYERS, BEHAVIORS, get_player
 from main import play
 import json
+import argparse
 
 class Arguments: pass
 
-if __name__ == "__main__":
+def all(args):
     data = {}
     prefix = ["", "Supportive-"]
     non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
@@ -37,3 +39,16 @@ if __name__ == "__main__":
                             args.hand    = 'hand_out'
                             d3[p1.__name__] = play(args)[0] / 5
     json.dump(data, open('data.json', 'w'), indent=4)
+    
+
+def main():
+    parser = argparse.ArgumentParser("DomAIno-Simulations")
+    parser.add_argument
+
+    subparsers = parser.add_subparsers()
+    all_parser = subparsers.add_parser('all_vs_all', help="Play every posible combination of a strategies against" + \
+                                        "all strategies")
+    all_parser.set_defaults(command=all)
+
+if __name__ == "__main__":
+    main()
