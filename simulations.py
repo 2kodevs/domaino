@@ -1,4 +1,4 @@
-from domaino import RULES, PLAYERS, BEHAVIORS, BasePlayer, get_player
+from domaino import RULES, PLAYERS, BEHAVIORS, get_player
 from main import play
 import json
 
@@ -30,10 +30,10 @@ if __name__ == "__main__":
                                 continue
                             args = Arguments()
                             args.player0 = f'{b.__name__}-{prefix[idx]}{p0.__name__}'
-                            args.player1 = f'{prefix[idx]}{p1.__name__}'
+                            args.player1 = f'{b.__name__}-{prefix[idx]}{p1.__name__}'
                             args.rule    = r.__name__
-                            args.rep     = 100
+                            args.rep     = 500
                             args.pieces  = g[1]
                             args.hand    = 'hand_out'
-                            d3[p1.__name__] = play(args)[0]
+                            d3[p1.__name__] = play(args)[0] / 5
     json.dump(data, open('data.json', 'w'), indent=4)
