@@ -5,6 +5,7 @@ import json
 import argparse
 
 class Arguments: pass
+non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
 
 prefix = ["", "Supportive-"]
 non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
@@ -38,6 +39,25 @@ def all(args):
                             args.hand    = 'hand_out'
                             d3[p1.__name__] = play(args)[0] / 5
     json.dump(data, open('data.json', 'w'), indent=4)
+
+def casino_vs_bota():
+    data = {}
+    players = [('Casino', 'Casino-Supportive-DataDropper'), ('BigDrop', 'Supportive-BigDrop')]
+    for p1 in players:
+        d1 = data[p1[0]] = {}
+        for p2 in PLAYERS:
+            if p2.__name__ in non_valid:
+                continue
+            args = Arguments()
+            args.player0 = p1[1]
+            args.player1 = f'Supportive-{p2.__name__}'
+            args.rule    = "OneGame"
+            args.rep     = 500
+            args.pieces  = [9, 10]
+            args.hand    = 'data_zero'
+            d1[p2.__name__] = play(args)[0] / 5
+    json.dump(data, open('data_casino.json', 'w'), indent=4)
+
     
 def sim_data_opponent(args):
     data = {}
@@ -148,4 +168,4 @@ def main():
     all_parser.set_defaults(command=all)
 
 if __name__ == "__main__":
-    main()
+    casino_vs_bota()
