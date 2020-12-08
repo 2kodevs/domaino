@@ -84,33 +84,31 @@ class SimpleHybrid(BasePlayer):
         else:
             return 0
 
-    def choice(self):
+    def filter(self, valids=None):
+        valids = super().filter(valids)
+
         heads = self.heads
         bigger = float('-inf')
         final_piece = None
 
-        for piece in self.pieces:
-            if -1 in heads or \
-                    piece[0] in heads or \
-                    piece[1] in heads:
+        for piece, _ in valids:
+            values = []
 
-                values = []
+            values.append(self.eval_random(piece))
+            values.append(self.eval_big_drop(piece))
+            values.append(self.eval_big_drop_soft(piece))
+            values.append(self.eval_frequent(piece))
+            values.append(self.eval_frequent_soft(piece))
+            values.append(self.eval_doubles(piece))
 
-                values.append(self.eval_random(piece))
-                values.append(self.eval_big_drop(piece))
-                values.append(self.eval_big_drop_soft(piece))
-                values.append(self.eval_frequent(piece))
-                values.append(self.eval_frequent_soft(piece))
-                values.append(self.eval_doubles(piece))
+            mul = np.multiply(self.coef, values)
+            val = np.sum(mul)
 
-                mul = np.multiply(self.coef, values)
-                val = np.sum(mul)
-
-                if val > bigger:
-                    bigger = val
-                    final_piece = piece
+            if val > bigger:
+                bigger = val
+                final_piece = piece
 
         # What head
         head = 0 if heads[0] in final_piece else 1
 
-        return final_piece, head
+        return [(final_piece, head)]
