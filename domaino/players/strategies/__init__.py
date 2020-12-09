@@ -13,6 +13,7 @@ from .agachao import Agachao
 from .data_dropper import DataDropper
 from .always_double import AlwaysDouble
 from .double_end import DoubleEnd
+from .non_double import NonDouble
 
 # Add players to this list
 PLAYERS = [
@@ -32,4 +33,5 @@ PLAYERS = [
     DataDropper,
     AlwaysDouble,
     DoubleEnd,
+    NonDouble,
 ]
