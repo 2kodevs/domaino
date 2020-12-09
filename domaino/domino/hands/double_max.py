@@ -9,7 +9,7 @@ def double_max(max_number, pieces_per_player):
         (i, j) 0 <= i <= j <= max_number
     Each player will have `pieces_per_player`.
     """
-    hand = [[(9, 9)], [(6, 6)]][max_number == 6]
+    hand = [(max_number, max_number)]
     
     pieces = [(i, j) for i in range(max_number + 1) for j in range(max_number + 1) if i <= j and (i, j) not in hand]
     assert 4 * pieces_per_player <= len(pieces) + 1
