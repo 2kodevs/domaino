@@ -29,9 +29,9 @@ class DoubleEnd(BasePlayer):
                         heads[head] = piece[piece[0] == heads[head]]
                     player_pieces[player] = player_pieces.get(player, 0) + 1
 
-            if not any([self.pieces_per_player - x <= 2 for x in player_pieces.values()]):
-                data.clear()
-
-        return data if data else valids
+            if any([self.pieces_per_player - x <= 2 for x in player_pieces.values()]):
+                return data
+                
+        return valids
                 
                     
