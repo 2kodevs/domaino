@@ -13,5 +13,7 @@ class NonDouble(BasePlayer):
         for piece, head in valids:
             if piece[0] != piece[1]:
                 data.append((piece, head))
-        return data if data else valids
+        if data and is_end(self.history, self.pieces_per_player):
+            return data
+        return valids
         
