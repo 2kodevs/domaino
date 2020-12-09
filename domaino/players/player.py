@@ -53,6 +53,7 @@ class BasePlayer:
     def reset(self, position, pieces):
         self.position = position
         self.pieces = pieces
+        self.pieces_per_player = len(pieces)
 
         self.history.clear()
 

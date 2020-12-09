@@ -5,6 +5,7 @@ from .data_zero import data_zero
 from .no_doubles import no_doubles
 from .data_partner import data_partner, data_partner_low
 from .data_opponent import data_opponent, data_opponent_low
+from .double_max import double_max
 
 HANDS = [
     hand_out,
@@ -17,6 +18,7 @@ HANDS = [
     data_partner_low,
     data_opponent,
     data_opponent_low,
+    double_max,
 ]
 
 def get_hand(value):
