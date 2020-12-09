@@ -7,7 +7,7 @@ class Arguments: pass
 non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
 
 prefix = ["", "Supportive-"]
-non_valid = ['SimpleHybrid', 'MonteCarlo', 'Supportive', 'Casino']
+non_valid = ['MonteCarlo', 'Supportive', 'Casino']
 random = get_player('random')
 
 interesting_data = [
