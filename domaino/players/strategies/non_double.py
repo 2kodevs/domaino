@@ -1,4 +1,5 @@
 from ..player import BasePlayer
+from .utils import is_end
 
 class NonDouble(BasePlayer):
     ''' This player prefer to play non-double pieces
