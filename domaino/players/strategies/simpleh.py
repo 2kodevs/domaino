@@ -91,6 +91,7 @@ class SimpleHybrid(BasePlayer):
         bigger = float('-inf')
         final_piece = None
 
+        final_pieces = []
         for piece, _ in valids:
             values = []
 
@@ -106,9 +107,8 @@ class SimpleHybrid(BasePlayer):
 
             if val > bigger:
                 bigger = val
-                final_piece = piece
+                final_pieces = []
+            if val == bigger:
+                final_pieces.append((piece, [1, 0][heads[0] in piece]))
 
-        # What head
-        head = 0 if heads[0] in final_piece else 1
-
-        return [(final_piece, head)]
+        return final_pieces
